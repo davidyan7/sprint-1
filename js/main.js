@@ -5,6 +5,7 @@ const FLAG = '🚩';
 const SMILE = '😃';
 const WINSMILE = '😎';
 const LOSESMILE = '😔';
+const LIVES = '💛  '
 
 // const noRightClick = document.getElementId('tbody');
 // noRightClick.addEventListener("contextmenu", e => e.preventDefault());
@@ -19,7 +20,8 @@ var gGame = {
     isFirstClick: true,
     shownCount: 0,
     markedCount: 0,
-    secsPassed: 0
+    secsPassed: 0,
+    lives: 3
 }
 
 var gTimeOn = false
@@ -30,11 +32,12 @@ function init() {
     renderBoard(gBoard, '.board');
     gGame.isOn = true
     document.querySelector('.smilei').innerText = SMILE;
+    gGame.lives = 3
+    document.querySelector('.lives').innerText = LIVES + LIVES + LIVES;
 
 }
 
-
-function buildBoard(size, minesCount) {
+function buildBoard(size, mines) {
     var board = [];
     for (var i = 0; i < size; i++) {
         board.push([]);
@@ -51,13 +54,11 @@ function buildBoard(size, minesCount) {
             }
         }
     }
-    var mines = setRandomMines(board, minesCount);
+    var mines = setRandomMines(board, mines);
     for (var i = 0; i < mines.length; i++) {
         board[mines[i].i][mines[i].j].isMine = true
 
-
     }
-
     for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
             if ((board[i][j].isMine !== true)) {
@@ -67,6 +68,26 @@ function buildBoard(size, minesCount) {
         }
     }
     return board;
+}
+
+
+function firstClickSafe() {
+    var mines = setRandomMines(gBoard, minesCount);
+    for (var i = 0; i < mines.length; i++) {
+        gBoard[mines[i].i][mines[i].j].isMine = true
+
+
+    }
+
+    for (var i = 0; i < size; i++) {
+        for (var j = 0; j < size; j++) {
+            if (gBoard[i][j].isMine !== true) {
+                gBoard[i][j].cellCont = setMinesNegsCount(i, j, gBoard);
+                gBoard[i][j].minesAroundCount = setMinesNegsCount(i, j, gBoard);
+            }
+        }
+    }
+
 }
 
 function setRandomMines(board, minesCount) {
@@ -91,6 +112,7 @@ function renderBoard(board, selector) {
         for (var j = 0; j < board[0].length; j++) {
             var isHidden = (board[i][j].isShown) ? '' : 'cell-context';
             if (board[i][j].isMine === true) board[i][j].minesAroundCount = MINE
+            if (board[i][j].minesAroundCount === 0) board[i][j].minesAroundCount = ''
             var minesAround = board[i][j].minesAroundCount;
             strHTML += `<td id="cell-${i}-${j}"  onmousedown="cellClicked(this,event)" oncontextmenu="return false"><span class="${isHidden}">${minesAround}</span></td>`;
         }
@@ -113,7 +135,7 @@ function cellClicked(elCell, ev) {
         gGame.isFirstClick = false;
         gGame.isOn = true
     }
-    if (gGame.isOn === false) return
+    // if (gGame.isOn === false) return
     var currLocation = getIdxObj(elCell.id);
     var currCell = gBoard[currLocation.i][currLocation.j];
     if (gTimeOn === false) timer()
@@ -131,15 +153,18 @@ function cellClicked(elCell, ev) {
     checkIfWin()
 
     if (currCell.isMine) {
-        for (var i = 0; i < gBoard.length; i++) {
-            for (var j = 0; j < gBoard[0].length; j++) {
-                if (gBoard[i][j].isMine) {
-                    gBoard[i][j].isShown = true;
-                    document.querySelector(`#cell-${i}-${j} span`).classList.remove('cell-context');
+        gGame.lives--
+            if (gGame.lives === 0) {
+                for (var i = 0; i < gBoard.length; i++) {
+                    for (var j = 0; j < gBoard[0].length; j++) {
+                        if (gBoard[i][j].isMine) {
+                            gBoard[i][j].isShown = true;
+                            document.querySelector(`#cell-${i}-${j} span`).classList.remove('cell-context');
+                        }
+                    }
                 }
             }
-        }
-        gameOver()
+        checkGameOver()
     }
 }
 
@@ -164,7 +189,7 @@ function cellMark(elCell) {
         elCellContext.classList.add('cell-context')
         gGame.markedCount--
     }
-    if (gGame.markedCount === gLevel.mines) checkIfWin()
+    if (gGame.markedCount === gLevel.mines - (3 - gGame.lives)) checkIfWin()
 }
 
 
@@ -211,20 +236,20 @@ function openEmptyNegs(cellI, cellJ) {
     }
 }
 
+function checkGameOver() {
+    if (gGame.lives === 2) document.querySelector('.lives').innerText = LIVES + LIVES;
+    if (gGame.lives === 1) document.querySelector('.lives').innerText = LIVES;
+    if (gGame.lives === 0) {
+        document.querySelector('.lives').innerText = '';
+        gameOver();
+    }
 
+}
 
 function gameOver() {
     document.querySelector('.smilei').innerText = LOSESMILE;
     clearInterval(gGameInterval)
-    console.log('game over');
-    gGameInterval = null;
-    gGame.secsPassed = 0;
-    gTimeOn = false;
-    gGame.isOn = false;
-    gGame.isFirstClick = false;
-    gGame.shownCount = 0
-    gGame.markedCount = 0
-
+    resetGameData()
 }
 
 function checkIfWin() {
@@ -234,12 +259,19 @@ function checkIfWin() {
             if (gBoard[i][j].isShown) gGame.shownCount++
         }
     }
-    if (gGame.shownCount === gLevel.size ** 2 - gLevel.mines &&
-        gGame.markedCount === gLevel.mines) resetGameData()
+    if (gGame.shownCount === (gLevel.size ** 2)) {
+        document.querySelector('.smilei').innerText = WINSMILE;
+        resetGameData()
+    }
+    if (gGame.shownCount === (gLevel.size ** 2) - gLevel.mines + (3 - gGame.lives) &&
+        gGame.markedCount === gLevel.mines - (3 - gGame.lives)) {
+        document.querySelector('.smilei').innerText = WINSMILE;
+        resetGameData()
+    }
 }
 
+
 function resetGameData() {
-    document.querySelector('.smilei').innerText = WINSMILE;
     clearInterval(gGameInterval)
     console.log('Win');
     gGameInterval = null;
@@ -249,11 +281,10 @@ function resetGameData() {
     gGame.isFirstClick = false;
     gGame.shownCount = 0;
     gGame.markedCount = 0;
+    gGame.lives = 3
+
 
 }
-
-
-
 
 function timer() {
     var elTimer = document.querySelector('.timer');
@@ -291,14 +322,6 @@ function boardSize(diff) {
     gTimeOn = false
     gGame.secsPassed = 0
     init()
-}
-
-
-
-
-function getClassName(location) {
-    var cellClass = 'cell-' + location.i + '-' + location.j;
-    return cellClass;
 }
 
 function getIdxObj(id) {
