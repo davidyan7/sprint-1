@@ -1,7 +1,9 @@
 body {
     text-align: center;
-    color: blanchedalmond;
+    color: rgb(0, 0, 0);
     background-color: rgb(228, 76, 76);
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 20px;
 }
 
 table {
@@ -13,9 +15,9 @@ table {
 }
 
 td {
-    width: 25px;
-    height: 25px;
-    border: 1px solid lightsalmon;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgb(255, 202, 122);
     ;
 }
 
@@ -24,22 +26,27 @@ td:hover {
 }
 
 .timer {
+    font-size: 17px;
     margin: 0 auto;
-    margin-bottom: 20px;
-    font-size: 18px;
+    margin-bottom: 5px;
     border: 3px solid;
     border-color: lightsalmon;
     background-color: rgb(228, 76, 76);
-    color: blanchedalmond;
-    width: 80px;
+    color: rgb(0, 0, 0);
+    width: 110px;
 }
 
 button {
-    font-size: 18px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 20px;
     border: 3px solid;
     border-color: lightsalmon;
     background-color: rgb(228, 76, 76);
-    color: blanchedalmond;
+    color: rgb(0, 0, 0);
+}
+
+footer {
+    margin-top: 40px;
 }
 
 button:hover {
@@ -48,22 +55,30 @@ button:hover {
 
 span {
     visibility: visible;
-    /* background-color: red; */
-    /* visibility: hidden; */
 }
 
 .cell-context {
-    /* background-color: red; */
-    /* visibility: visible; */
     visibility: hidden;
 }
 
 .smilei {
-    font-size: 40px;
+    font-size: 25px;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .lives {
-    font-size: 40px;
+    font-size: 25px;
     margin-top: 10px;
+    height: 50px;
+}
+
+.hint {
+    font-size: 25px;
+    margin: 0 auto;
+    border: 3px solid;
+    border-color: lightsalmon;
+    width: 380px;
+    margin-bottom: 10px;
+    cursor: pointer;
 }

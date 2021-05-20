@@ -11,17 +11,19 @@
 
 <body onload="init()">
     <h1>Minesweeper</h1>
-    <div class="timer"><span>Time:</span> 0</div>
-    <div class="smilei"> 😃 </div>
+    <button class="smilei" onclick="smileiResetGame()">😃</button>
+    <div class="hint" onclick="hint(this)"><span>Hint :</span> 3 </div>
     <div class="size">
         <button onclick="boardSize(this)">Easy</button>
         <button onclick="boardSize(this)">Medium</button>
         <button onclick="boardSize(this)">Hard</button>
     </div>
     <div class="lives">💛 💛 💛</div>
+    <div class="timer"><span>Time:</span> 0</div>
     <table border="1" cellpadding="10">
         <tbody class="board"></tbody>
     </table>
+    <footer>&copy; Sahar Davidyan 2021 </footer>
     <script src="js/main.js"></script>
 </body>
 
