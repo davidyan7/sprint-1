@@ -3,7 +3,7 @@ body {
     color: rgb(0, 0, 0);
     background-color: rgb(228, 76, 76);
     font-family: "Lucida Console", "Courier New", monospace;
-    font-size: 20px;
+    font-size: 13px;
 }
 
 table {
@@ -11,12 +11,16 @@ table {
     border: 3px solid;
     border-color: lightsalmon;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 10px;
+}
+
+h1 {
+    font-size: 40px;
 }
 
 td {
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border: 1px solid rgb(255, 202, 122);
     ;
 }
@@ -26,7 +30,7 @@ td:hover {
 }
 
 .timer {
-    font-size: 17px;
+    font-size: 15px;
     margin: 0 auto;
     margin-bottom: 5px;
     border: 3px solid;
@@ -38,11 +42,12 @@ td:hover {
 
 button {
     font-family: "Lucida Console", "Courier New", monospace;
-    font-size: 20px;
+    font-size: 14px;
     border: 3px solid;
     border-color: lightsalmon;
     background-color: rgb(228, 76, 76);
     color: rgb(0, 0, 0);
+    cursor: pointer;
 }
 
 footer {
@@ -63,22 +68,32 @@ span {
 
 .smilei {
     font-size: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     cursor: pointer;
 }
 
 .lives {
-    font-size: 25px;
-    margin-top: 10px;
-    height: 50px;
+    font-size: 18px;
+    margin-top: 5px;
+    height: 35px;
 }
 
 .hint {
-    font-size: 25px;
+    font-size: 18px;
     margin: 0 auto;
     border: 3px solid;
     border-color: lightsalmon;
-    width: 380px;
+    width: 260px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.safe {
+    font-size: 18px;
+    margin: 0 auto;
+    border: 3px solid;
+    border-color: lightsalmon;
+    width: 340px;
     margin-bottom: 10px;
     cursor: pointer;
 }
